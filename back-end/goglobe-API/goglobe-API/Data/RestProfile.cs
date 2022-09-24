@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using goglobe_API.Data.DTOs.Agencies;
+using goglobe_API.Data.DTOs.TravelOffers;
 using goglobe_API.Data.Entities;
 
 namespace goglobe_API.Data
@@ -10,6 +11,8 @@ namespace goglobe_API.Data
         {
             CreateMap<Agency, AgencyDTO>();
             CreateMap<Agency, CreateAgencyDTO>();
+            CreateMap<TravelOffer, TravelOfferDTO>();
+            CreateMap<TravelOffer, CreateTravelOfferDTO>();
         }
     }
 }

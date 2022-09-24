@@ -21,6 +21,7 @@ namespace goglobe_API
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
             services.AddTransient<IAgencyRepository, AgenciesRepository>();
+            services.AddTransient<ITravelOfferRepository, TravelOffersRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
