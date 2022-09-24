@@ -6,5 +6,6 @@
         public int TravelOfferId { get; set; }
         public TravelOffer TravelOffer { get; set; }
         public int PropertyId { get; set; }
+        public Property Property { get; set; }
     }
 }

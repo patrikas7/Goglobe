@@ -6,6 +6,7 @@ using goglobe_API.Data.Entities;
 using goglobe_API.Data.DTOs.TravelOffers;
 using System.Linq;
 using AutoMapper;
+using System;
 
 namespace goglobe_API.Controllers
 {
@@ -42,8 +43,17 @@ namespace goglobe_API.Controllers
         public async Task<ActionResult<TravelOfferDTO>> Post(CreateTravelOfferDTO createTravelOfferDTO)
         {
             var travelOffer = _mapper.Map<TravelOffer>(createTravelOfferDTO);
-
-            await _travelOfferRepository.Create(travelOffer);
+            
+            try
+            {
+                await _travelOfferRepository.Create(travelOffer);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return BadRequest();
+            }
+            
 
             return Created($"/api/travelOffers.{travelOffer.Id}", _mapper.Map<TravelOfferDTO>(travelOffer));
         }
@@ -53,8 +63,17 @@ namespace goglobe_API.Controllers
         {
             var travelOffer = await _travelOfferRepository.Get(id);
             if (travelOffer == null) return NotFound($"TravelOffer with id `{id}` was not found");
+            _mapper.Map(createTravelOfferDTO, travelOffer);
 
-            await _travelOfferRepository.Put(travelOffer);
+            try
+            {
+                await _travelOfferRepository.Put(travelOffer);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return BadRequest();
+            }
 
             return Ok(_mapper.Map<TravelOfferDTO>(travelOffer));
         }

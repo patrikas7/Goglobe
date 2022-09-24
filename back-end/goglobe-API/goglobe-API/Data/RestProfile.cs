@@ -11,12 +11,12 @@ namespace goglobe_API.Data
         public RestProfile()
         {
             CreateMap<Agency, AgencyDTO>();
-            CreateMap<Agency, CreateAgencyDTO>();
+            CreateMap<CreateAgencyDTO, Agency>();
             CreateMap<TravelOffer, TravelOfferDTO>();
-            CreateMap<TravelOffer, CreateTravelOfferDTO>();
+            CreateMap<CreateTravelOfferDTO, TravelOffer>();
             CreateMap<Booking, BookingDTO>();
-            CreateMap<Booking, CreateBookingDTO>();
-            CreateMap<Booking, UpdateBookingDTO>();
+            CreateMap<CreateBookingDTO, Booking>();
+            CreateMap<UpdateBookingDTO, Booking>();
         }
     }
 }

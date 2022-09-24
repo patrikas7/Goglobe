@@ -10,8 +10,8 @@ using goglobe_API.Data;
 namespace goglobe_API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220924161703_testMigration")]
-    partial class testMigration
+    [Migration("20220924223142_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -143,18 +143,12 @@ namespace goglobe_API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Properties");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Property");
                 });
 
             modelBuilder.Entity("goglobe_API.Data.Entities.Room", b =>
@@ -278,10 +272,6 @@ namespace goglobe_API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -297,29 +287,27 @@ namespace goglobe_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
                 });
 
             modelBuilder.Entity("goglobe_API.Data.Entities.ExludedProperty", b =>
                 {
                     b.HasBaseType("goglobe_API.Data.Entities.Property");
 
-                    b.HasDiscriminator().HasValue("ExludedProperty");
+                    b.ToTable("ExludedProperties");
                 });
 
             modelBuilder.Entity("goglobe_API.Data.Entities.IncludedProperty", b =>
                 {
                     b.HasBaseType("goglobe_API.Data.Entities.Property");
 
-                    b.HasDiscriminator().HasValue("IncludedProperty");
+                    b.ToTable("IncludedProperties");
                 });
 
             modelBuilder.Entity("goglobe_API.Data.Entities.Administrator", b =>
                 {
                     b.HasBaseType("goglobe_API.Data.Entities.User");
 
-                    b.HasDiscriminator().HasValue("Administrator");
+                    b.ToTable("Administrators");
                 });
 
             modelBuilder.Entity("goglobe_API.Data.Entities.Client", b =>
@@ -329,7 +317,7 @@ namespace goglobe_API.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.HasDiscriminator().HasValue("Client");
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("goglobe_API.Data.Entities.Booking", b =>
@@ -418,7 +406,7 @@ namespace goglobe_API.Migrations
 
             modelBuilder.Entity("goglobe_API.Data.Entities.TravelProperty", b =>
                 {
-                    b.HasOne("goglobe_API.Data.Entities.Property", null)
+                    b.HasOne("goglobe_API.Data.Entities.Property", "Property")
                         .WithMany("TravelProperties")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -430,7 +418,45 @@ namespace goglobe_API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Property");
+
                     b.Navigation("TravelOffer");
+                });
+
+            modelBuilder.Entity("goglobe_API.Data.Entities.ExludedProperty", b =>
+                {
+                    b.HasOne("goglobe_API.Data.Entities.Property", null)
+                        .WithOne()
+                        .HasForeignKey("goglobe_API.Data.Entities.ExludedProperty", "Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("goglobe_API.Data.Entities.IncludedProperty", b =>
+                {
+                    b.HasOne("goglobe_API.Data.Entities.Property", null)
+                        .WithOne()
+                        .HasForeignKey("goglobe_API.Data.Entities.IncludedProperty", "Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("goglobe_API.Data.Entities.Administrator", b =>
+                {
+                    b.HasOne("goglobe_API.Data.Entities.User", null)
+                        .WithOne()
+                        .HasForeignKey("goglobe_API.Data.Entities.Administrator", "Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("goglobe_API.Data.Entities.Client", b =>
+                {
+                    b.HasOne("goglobe_API.Data.Entities.User", null)
+                        .WithOne()
+                        .HasForeignKey("goglobe_API.Data.Entities.Client", "Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("goglobe_API.Data.Entities.City", b =>

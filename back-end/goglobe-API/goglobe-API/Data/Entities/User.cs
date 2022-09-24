@@ -1,5 +1,8 @@
-﻿namespace goglobe_API.Data.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace goglobe_API.Data.Entities
 {
+    [Table("Users")]
     public class User
     {
         public int Id { get; set; }
