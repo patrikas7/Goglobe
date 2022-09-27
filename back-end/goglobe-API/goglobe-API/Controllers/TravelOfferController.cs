@@ -39,6 +39,13 @@ namespace goglobe_API.Controllers
             return Ok(_mapper.Map<TravelOfferDTO>(travelOffer));
         }
 
+        [HttpGet("filter")]
+        public async Task<IEnumerable<TravelOfferDTO>> GetByDates([FromQuery] DateTime dateFrom, [FromQuery] DateTime dateTo)
+        {
+            return (await _travelOfferRepository.GetByDate(dateFrom, dateTo))
+                .Select(obj => _mapper.Map<TravelOfferDTO>(obj));
+        }
+
         [HttpPost]
         public async Task<ActionResult<TravelOfferDTO>> Post(CreateTravelOfferDTO createTravelOfferDTO)
         {

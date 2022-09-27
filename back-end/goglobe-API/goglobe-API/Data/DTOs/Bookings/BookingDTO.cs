@@ -4,5 +4,5 @@ using System;
 namespace goglobe_API.Data.DTOs.Bookings
 {
     public record BookingDTO(int Id, DateTime Date, string BookingReference,
-        Status Status, TravelOffer TravelOffer, Client Client);
+        Status Status, int TravelOfferId, int ClientId);
 }

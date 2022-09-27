@@ -1,7 +1,9 @@
 ﻿using goglobe_API.Data.Entities;
 using goglobe_API.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace goglobe_API.Data.Repository
@@ -37,6 +39,16 @@ namespace goglobe_API.Data.Repository
         public async Task<IEnumerable<TravelOffer>> GetAll()
         {
             return await _databaseContext.TravelOffers.ToListAsync();
+        }
+
+        public async Task<IEnumerable<TravelOffer>> GetByDate(DateTime departureDate, DateTime returnDate)
+        {
+            return await _databaseContext.TravelOffers
+                                         .Where(obj => obj.DepartureDate >= departureDate
+                                                && obj.DepartureDate < returnDate
+                                                && obj.ReturnDate > departureDate 
+                                                && obj.ReturnDate <= returnDate)
+                                         .ToListAsync();
         }
 
         public async Task<TravelOffer> Put(TravelOffer travelOffer)

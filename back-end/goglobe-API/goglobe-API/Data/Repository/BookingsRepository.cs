@@ -39,6 +39,11 @@ namespace goglobe_API.Data.Repository
             return await _databaseContext.Bookings.ToListAsync();
         }
 
+        public async Task<Booking> GetByBookingReference(string bookingReference)
+        {
+            return await _databaseContext.Bookings.FirstOrDefaultAsync(obj => obj.BookingReference == bookingReference);
+        }
+
         public async Task<Booking> Put(Booking booking)
         {
             _databaseContext.Bookings.Update(booking);

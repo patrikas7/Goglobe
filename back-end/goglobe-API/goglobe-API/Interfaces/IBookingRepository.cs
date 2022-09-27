@@ -9,6 +9,8 @@ namespace goglobe_API.Interfaces
         Task<IEnumerable<Booking>> GetAll();
         Task<Booking> Get(int id);
 
+        Task<Booking> GetByBookingReference(string bookingReference);
+
         Task<Booking> Create(Booking booking);
 
         Task<Booking> Put(Booking booking);

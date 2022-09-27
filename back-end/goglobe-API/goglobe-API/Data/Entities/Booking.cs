@@ -15,8 +15,8 @@ namespace goglobe_API.Data.Entities
     }
 
     public enum Status {
-        Confirmed,
-        Canceled,
-        Pending
+        Confirmed = 1,
+        Canceled = 2,
+        Pending = 3
     }
 }
