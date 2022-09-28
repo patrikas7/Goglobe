@@ -46,5 +46,10 @@ namespace goglobe_API.Data.Repository
             _databaseContext.Agencies.Remove(agency);
             await _databaseContext.SaveChangesAsync();
         }
+
+        public async Task<Agency> GetByName(string name)
+        {
+            return await _databaseContext.Agencies.FirstOrDefaultAsync(obj => obj.Name == name);
+        }
     }
 }

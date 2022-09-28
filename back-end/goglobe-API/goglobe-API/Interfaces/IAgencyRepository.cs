@@ -10,6 +10,8 @@ namespace goglobe_API.Interfaces
 
         Task<Agency> Get(int id);
 
+        Task<Agency> GetByName(string name);
+
         Task<Agency> Create(Agency agency);
 
         Task<Agency> Put(Agency agency);

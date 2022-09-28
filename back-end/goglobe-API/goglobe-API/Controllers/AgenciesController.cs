@@ -40,6 +40,15 @@ namespace goglobe_API.Controllers
             return Ok(_mapper.Map<AgencyDTO>(agency));
         }
 
+        [HttpGet("filter")]
+        public async Task<ActionResult<AgencyDTO>> GetByName([FromQuery] string name)
+        {
+            var agency = await _agenciesRepository.GetByName(name);
+            if (agency == null) return NotFound($"Agency with name `{name}` was not found");
+
+            return Ok(_mapper.Map<AgencyDTO>(agency));
+        }
+
         [HttpPost]
         public async Task<ActionResult<AgencyDTO>> Post(CreateAgencyDTO createAgencyDTO)
         {
