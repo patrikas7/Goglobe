@@ -60,11 +60,11 @@ namespace goglobe_API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<AgencyDTO>> Put(int id, CreateAgencyDTO createAgencyDTO)
+        public async Task<ActionResult<AgencyDTO>> Put(int id, UpdateAgencyDTO updateAgencyDTO)
         {
             var agency = await _agenciesRepository.Get(id);
             if (agency == null) return NotFound($"Agency with id `{id}` was not found");
-            _mapper.Map(createAgencyDTO, agency);
+            _mapper.Map(updateAgencyDTO, agency);
 
             await _agenciesRepository.Put(agency);
 

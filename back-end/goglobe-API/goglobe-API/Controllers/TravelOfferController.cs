@@ -66,11 +66,11 @@ namespace goglobe_API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<TravelOfferDTO>> Put(int id, CreateTravelOfferDTO createTravelOfferDTO)
+        public async Task<ActionResult<TravelOfferDTO>> Put(int id, UpdateTravelOfferDTO updateTravelOfferDTO)
         {
             var travelOffer = await _travelOfferRepository.Get(id);
             if (travelOffer == null) return NotFound($"TravelOffer with id `{id}` was not found");
-            _mapper.Map(createTravelOfferDTO, travelOffer);
+            _mapper.Map(updateTravelOfferDTO, travelOffer);
 
             try
             {
