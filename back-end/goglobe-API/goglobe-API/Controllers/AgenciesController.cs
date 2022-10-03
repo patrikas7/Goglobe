@@ -64,6 +64,7 @@ namespace goglobe_API.Controllers
         {
             var agency = await _agenciesRepository.Get(id);
             if (agency == null) return NotFound($"Agency with id `{id}` was not found");
+            _mapper.Map(createAgencyDTO, agency);
 
             await _agenciesRepository.Put(agency);
 
