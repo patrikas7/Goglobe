@@ -52,6 +52,9 @@ namespace goglobe_API.Controllers
         [HttpPost]
         public async Task<ActionResult<AgencyDTO>> Post(CreateAgencyDTO createAgencyDTO)
         {
+            if (_agenciesRepository.GetByName(createAgencyDTO.Name) != null)
+                return BadRequest($"Agency with name `{createAgencyDTO.Name}` aleady exists");
+
             var agency = _mapper.Map<Agency>(createAgencyDTO);
 
             await _agenciesRepository.Create(agency);
@@ -62,6 +65,9 @@ namespace goglobe_API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<AgencyDTO>> Put(int id, UpdateAgencyDTO updateAgencyDTO)
         {
+            if (_agenciesRepository.GetByName(updateAgencyDTO.Name) != null)
+                return BadRequest($"Agency with name `{updateAgencyDTO.Name}` aleady exists");
+
             var agency = await _agenciesRepository.Get(id);
             if (agency == null) return NotFound($"Agency with id `{id}` was not found");
             _mapper.Map(updateAgencyDTO, agency);

@@ -67,6 +67,8 @@ namespace goglobe_API.Controllers
                 }
             }
 
+            booking.Status = Status.Confirmed;
+
             try
             {
                 await _bookingRepository.Create(booking);

@@ -7,6 +7,7 @@ using goglobe_API.Data.DTOs.TravelOffers;
 using System.Linq;
 using AutoMapper;
 using System;
+using goglobe_API.Data.DTOs.Bookings;
 
 namespace goglobe_API.Controllers
 {
@@ -15,12 +16,14 @@ namespace goglobe_API.Controllers
     public class TravelOfferController : ControllerBase
     {
         private readonly ITravelOfferRepository _travelOfferRepository;
+        private readonly IBookingRepository _bookingRepository;
         private readonly IMapper _mapper;
 
-        public TravelOfferController(ITravelOfferRepository travelOfferRepository, IMapper mapper)
+        public TravelOfferController(ITravelOfferRepository travelOfferRepository, IMapper mapper, IBookingRepository bookingRepository)
         {
             _travelOfferRepository = travelOfferRepository;
             _mapper = mapper;
+            _bookingRepository = bookingRepository;
         }
 
         [HttpGet]
@@ -44,6 +47,15 @@ namespace goglobe_API.Controllers
         {
             return (await _travelOfferRepository.GetByDate(dateFrom, dateTo))
                 .Select(obj => _mapper.Map<TravelOfferDTO>(obj));
+        }
+
+        [HttpGet("{id}/bookings")]
+        public async Task<ActionResult<IEnumerable<BookingDTO>>> GetTravelOfferBookings(int id)
+        {
+            var travelOffer = await _travelOfferRepository.Get(id);
+            if (travelOffer == null) return NotFound($"Travel offer with id `{id}` was not found");
+
+            return Ok((await _bookingRepository.GetTravelOfferBookings(id)).Select(obj => _mapper.Map<BookingDTO>(obj)));
         }
 
         [HttpPost]
@@ -70,7 +82,7 @@ namespace goglobe_API.Controllers
         {
             var travelOffer = await _travelOfferRepository.Get(id);
             if (travelOffer == null) return NotFound($"TravelOffer with id `{id}` was not found");
-            _mapper.Map(updateTravelOfferDTO, travelOffer);
+            travelOffer = MapTravelOffers(updateTravelOfferDTO, travelOffer);
 
             try
             {
@@ -94,6 +106,21 @@ namespace goglobe_API.Controllers
             await _travelOfferRepository.Delete(travelOffer);
 
             return NoContent();
+        }
+
+        private static TravelOffer MapTravelOffers(UpdateTravelOfferDTO updateTravelOfferDTO, TravelOffer travelOffer)
+        {
+            if (updateTravelOfferDTO.Price != 0) travelOffer.Price = updateTravelOfferDTO.Price;
+            if (updateTravelOfferDTO.DepartureDate != default(DateTime)) travelOffer.DepartureDate = updateTravelOfferDTO.DepartureDate;
+            if (updateTravelOfferDTO.ReturnDate != default(DateTime)) travelOffer.ReturnDate = updateTravelOfferDTO.ReturnDate;
+            if (updateTravelOfferDTO.PersonCount != 0) travelOffer.PersonCount = updateTravelOfferDTO.PersonCount;
+            if (updateTravelOfferDTO.Description != null) travelOffer.Description = updateTravelOfferDTO.Description;
+            if (updateTravelOfferDTO.AgencyId != 0) travelOffer.AgencyId = updateTravelOfferDTO.AgencyId;
+            if (updateTravelOfferDTO.HotelId != 0) travelOffer.HotelId = updateTravelOfferDTO.HotelId;
+            if (updateTravelOfferDTO.CountryId != 0) travelOffer.CountryId = updateTravelOfferDTO.CountryId;
+            if (updateTravelOfferDTO.CityId != 0) travelOffer.CityId = updateTravelOfferDTO.CityId;
+
+            return travelOffer;
         }
     }
 }

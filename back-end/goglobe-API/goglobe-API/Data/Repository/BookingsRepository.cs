@@ -2,6 +2,7 @@
 using goglobe_API.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace goglobe_API.Data.Repository
@@ -42,6 +43,11 @@ namespace goglobe_API.Data.Repository
         public async Task<Booking> GetByBookingReference(string bookingReference)
         {
             return await _databaseContext.Bookings.FirstOrDefaultAsync(obj => obj.BookingReference == bookingReference);
+        }
+
+        public async Task<IEnumerable<Booking>> GetTravelOfferBookings(int travelOfferId)
+        {
+            return await _databaseContext.Bookings.Where(x => x.TravelOfferId == travelOfferId).ToListAsync();
         }
 
         public async Task<Booking> Put(Booking booking)
