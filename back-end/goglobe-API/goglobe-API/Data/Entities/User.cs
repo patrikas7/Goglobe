@@ -1,14 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace goglobe_API.Data.Entities
 {
     [Table("Users")]
-    public class User
+    public class User: IdentityUser
     {
-        public int Id { get; set; }
+        [PersonalData]
         public string Name { get; set; }
+
+        [PersonalData]
         public string Surname { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
     }
 }

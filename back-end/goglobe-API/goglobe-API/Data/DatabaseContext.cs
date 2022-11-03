@@ -1,9 +1,10 @@
 ﻿using goglobe_API.Data.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace goglobe_API.Data
 {
-    public class DatabaseContext: DbContext
+    public class DatabaseContext: IdentityDbContext<User>
     {
         public DbSet<Administrator> Administrators { get; set; }
         public DbSet<Agency> Agencies { get; set; }
@@ -23,7 +24,7 @@ namespace goglobe_API.Data
         public DbSet<User> Users { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=goglobe");
+            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=goglobeLive");
         }
     }
 }

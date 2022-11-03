@@ -3,5 +3,5 @@ using System.ComponentModel.DataAnnotations;
 
 namespace goglobe_API.Data.DTOs.Bookings
 {
-    public record CreateBookingDTO([Required] DateTime Date, [Required] int TravelOfferId, [Required] int ClientId);
+    public record CreateBookingDTO([Required] DateTime Date, [Required] int TravelOfferId, [Required] string ClientId);
 }

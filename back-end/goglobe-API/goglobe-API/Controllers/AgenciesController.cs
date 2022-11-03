@@ -6,8 +6,8 @@ using goglobe_API.Data.Entities;
 using goglobe_API.Data.DTOs.Agencies;
 using System.Linq;
 using AutoMapper;
-using System;
-using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
+using goglobe_API.Auth.Model;
 
 namespace goglobe_API.Controllers
 {
@@ -50,11 +50,9 @@ namespace goglobe_API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<AgencyDTO>> Post(CreateAgencyDTO createAgencyDTO)
         {
-            if (_agenciesRepository.GetByName(createAgencyDTO.Name) != null)
-                return BadRequest($"Agency with name `{createAgencyDTO.Name}` aleady exists");
-
             var agency = _mapper.Map<Agency>(createAgencyDTO);
 
             await _agenciesRepository.Create(agency);
@@ -63,11 +61,9 @@ namespace goglobe_API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<AgencyDTO>> Put(int id, UpdateAgencyDTO updateAgencyDTO)
         {
-            if (_agenciesRepository.GetByName(updateAgencyDTO.Name) != null)
-                return BadRequest($"Agency with name `{updateAgencyDTO.Name}` aleady exists");
-
             var agency = await _agenciesRepository.Get(id);
             if (agency == null) return NotFound($"Agency with id `{id}` was not found");
             _mapper.Map(updateAgencyDTO, agency);
@@ -78,6 +74,7 @@ namespace goglobe_API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<AgencyDTO>> Delete(int id)
         {
             var agency = await _agenciesRepository.Get(id);
@@ -85,7 +82,7 @@ namespace goglobe_API.Controllers
 
             await _agenciesRepository.Delete(agency);
 
-            return NoContent() ;
+            return NoContent();
         }
     }
 }

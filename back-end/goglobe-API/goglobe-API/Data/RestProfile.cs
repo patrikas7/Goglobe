@@ -3,6 +3,7 @@ using goglobe_API.Data.DTOs.Agencies;
 using goglobe_API.Data.DTOs.TravelOffers;
 using goglobe_API.Data.DTOs.Bookings;
 using goglobe_API.Data.Entities;
+using goglobe_API.Data.DTOs.Auth;
 
 namespace goglobe_API.Data
 {
@@ -18,6 +19,7 @@ namespace goglobe_API.Data
             CreateMap<Booking, BookingDTO>();
             CreateMap<CreateBookingDTO, Booking>();
             CreateMap<UpdateBookingDTO, Booking>();
+            CreateMap<User, UserDTO>();
         }
     }
 }

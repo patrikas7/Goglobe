@@ -8,6 +8,8 @@ using AutoMapper;
 using goglobe_API.Data.DTOs.Bookings;
 using System.Text;
 using System;
+using Microsoft.AspNetCore.Authorization;
+using goglobe_API.Auth.Model;
 
 namespace goglobe_API.Controllers
 {
@@ -17,14 +19,17 @@ namespace goglobe_API.Controllers
     {
         private readonly IBookingRepository _bookingRepository;
         private readonly IMapper _mapper;
+        private readonly IAuthorizationService _authorizationService;
 
-        public BookingController(IBookingRepository bookingRepository, IMapper mapper)
+        public BookingController(IBookingRepository bookingRepository, IMapper mapper, IAuthorizationService authorizationService)
         {
             _bookingRepository = bookingRepository;
             _mapper = mapper;
+            _authorizationService = authorizationService;
         }
 
         [HttpGet]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<IEnumerable<BookingDTO>> GetAll()
         {
             return (await _bookingRepository.GetAll())
@@ -32,24 +37,35 @@ namespace goglobe_API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = UserRoles.Client + "," + UserRoles.Admin)]
         public async Task<ActionResult<BookingDTO>> Get(int id)
         {
             var booking = await _bookingRepository.Get(id);
             if (booking == null) return NotFound($"Booking with id `{id}` was not found");
 
+            var authorizationResult =  await _authorizationService.AuthorizeAsync(User, booking, PolicyNames.SameUser);
+            if (!authorizationResult.Succeeded)
+                return NotFound();
+
             return Ok(_mapper.Map<BookingDTO>(booking));
         }
 
         [HttpGet("referenceNumber/{referenceNumber}")]
+        [Authorize(Roles = UserRoles.Client + "," + UserRoles.Admin)]
         public async Task<ActionResult<BookingDTO>> GetByBookingReference(string referenceNumber)
         {
             var booking = await _bookingRepository.GetByBookingReference(referenceNumber);
             if (booking == null) return NotFound($"Booking with id `{referenceNumber}` was not found");
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, booking, PolicyNames.SameUser);
+            if (!authorizationResult.Succeeded)
+                return NotFound();
+
 
             return Ok(_mapper.Map<BookingDTO>(booking));
         }
 
         [HttpPost]
+        [Authorize(Roles = UserRoles.Client + "," + UserRoles.Admin)]
         public async Task<ActionResult<BookingDTO>> Post(CreateBookingDTO createBookingDTO)
         {
             var booking = _mapper.Map<Booking>(createBookingDTO);
@@ -83,6 +99,7 @@ namespace goglobe_API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<BookingDTO>> Put(int id, UpdateBookingDTO updateTravelOfferDTO)
         {
             var booking = await _bookingRepository.Get(id);
@@ -110,6 +127,7 @@ namespace goglobe_API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<BookingDTO>> Delete(int id)
         {
             var booking = await _bookingRepository.Get(id);
@@ -139,7 +157,7 @@ namespace goglobe_API.Controllers
 
         private static Booking MapBooking(UpdateBookingDTO updateBookingDTO, Booking booking)
         {
-            if(updateBookingDTO.ClientId != 0)
+            if(updateBookingDTO.ClientId != null)
             {
                 booking.ClientId = updateBookingDTO.ClientId;
             }

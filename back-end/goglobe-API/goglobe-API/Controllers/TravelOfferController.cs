@@ -8,6 +8,8 @@ using System.Linq;
 using AutoMapper;
 using System;
 using goglobe_API.Data.DTOs.Bookings;
+using Microsoft.AspNetCore.Authorization;
+using goglobe_API.Auth.Model;
 
 namespace goglobe_API.Controllers
 {
@@ -50,6 +52,7 @@ namespace goglobe_API.Controllers
         }
 
         [HttpGet("{id}/bookings")]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<IEnumerable<BookingDTO>>> GetTravelOfferBookings(int id)
         {
             var travelOffer = await _travelOfferRepository.Get(id);
@@ -59,6 +62,7 @@ namespace goglobe_API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<TravelOfferDTO>> Post(CreateTravelOfferDTO createTravelOfferDTO)
         {
             var travelOffer = _mapper.Map<TravelOffer>(createTravelOfferDTO);
@@ -78,6 +82,7 @@ namespace goglobe_API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<TravelOfferDTO>> Put(int id, UpdateTravelOfferDTO updateTravelOfferDTO)
         {
             var travelOffer = await _travelOfferRepository.Get(id);
@@ -98,6 +103,7 @@ namespace goglobe_API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<TravelOfferDTO>> Delete(int id)
         {
             var travelOffer = await _travelOfferRepository.Get(id);
