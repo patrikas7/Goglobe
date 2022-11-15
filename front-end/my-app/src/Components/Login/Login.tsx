@@ -14,8 +14,8 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import ErrorMessage from "../Error/ErrorMessage";
-import "./_login.scss";
 import api from "../Api/api";
+import { hasObjectEmptyValues } from "../../Utils/utils";
 
 const ErrorMessages = {
   EMPTY_FIELDS: "Visi laukai yra privalomi!",
@@ -35,7 +35,7 @@ const Login: React.FC = () => {
       password: data.get("password"),
     };
 
-    if (!loginData.email || !loginData.password) {
+    if (hasObjectEmptyValues(loginData)) {
       setErrorMessage(ErrorMessages.EMPTY_FIELDS);
       return;
     }
@@ -106,7 +106,7 @@ const Login: React.FC = () => {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   Neturite paskyros? Užsiregistruokite
                 </Link>
               </Grid>
