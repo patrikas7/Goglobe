@@ -8,6 +8,7 @@ import TravelOfferPage from "./Pages/TravelOfferPage";
 import "./reset.scss";
 import AgenciesPage from "./Pages/AgenciesPage";
 import AgencyFormPage from "./Pages/AgencyFormPage";
+import TravelOfferFormPage from "./Pages/TravelOfferFormPage";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -21,6 +22,7 @@ root.render(
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegistrationPage />} />
         <Route path="/travelOffer" element={<TravelOfferPage />} />
+        <Route path="/travelOffer/new" element={<TravelOfferFormPage />} />
         <Route path="/agencies" element={<AgenciesPage />} />
         <Route path="/agencies/new" element={<AgencyFormPage />} />
       </Routes>

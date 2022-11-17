@@ -1,4 +1,5 @@
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
+import SearchBar from "../SearchBar/SearchBar";
 import UserMenu from "../UserMenu/UserMenu";
 
 const Header: React.FC = () => {
@@ -9,6 +10,7 @@ const Header: React.FC = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Goglobe
           </Typography>
+          <SearchBar />
           <Button color="inherit" href="/agencies">
             Agentūros
           </Button>

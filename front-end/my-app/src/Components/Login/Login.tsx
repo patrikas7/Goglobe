@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Alert,
   Avatar,
   Box,
   Button,
@@ -9,35 +10,42 @@ import {
   Typography,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import ErrorMessage from "../Error/ErrorMessage";
 import api from "../Api/api";
-import { hasObjectEmptyValues } from "../../Utils/utils";
 import FormContainer from "../Containers/FormContainer";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const ErrorMessages = {
   EMPTY_FIELDS: "Visi laukai yra privalomi!",
   WRONG_LOGIN: "Neteisingi prisijungimo duomenys",
-  UNEXPECTED_ERROR: "Įvyko netikėta klaida, bandykite vėliau",
+  UNEXPECTED_ERROR: "Įvyko nenumatyta klaida, bandykite vėliau",
 };
 
 const Login: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
     setErrorMessage("");
-    const data = new FormData(e.currentTarget);
+    const formData = new FormData(e.currentTarget);
     const loginData = {
-      email: data.get("email"),
-      password: data.get("password"),
+      email: formData.get("email"),
+      password: formData.get("password"),
     };
 
-    const login = await api.post("/login", loginData);
-    console.log(login);
+    try {
+      const { data } = await api.post("/login", loginData);
+    } catch (error) {
+      setErrorMessage(ErrorMessages.UNEXPECTED_ERROR);
+    }
+
+    setIsLoading(false);
   };
 
   return (
     <FormContainer>
+      <LoadingSpinner isOpen={isLoading} />
       <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
         <LockOutlinedIcon />
       </Avatar>
@@ -65,7 +73,8 @@ const Login: React.FC = () => {
           id="password"
           autoComplete="current-password"
         />
-        {errorMessage && <ErrorMessage message={errorMessage} />}
+
+        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
         <Button
           type="submit"
           fullWidth

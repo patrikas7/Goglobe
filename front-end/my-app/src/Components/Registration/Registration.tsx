@@ -1,8 +1,8 @@
 import {
+  Alert,
   Avatar,
   Box,
   Button,
-  createTheme,
   Grid,
   Link,
   TextField,
@@ -11,15 +11,14 @@ import {
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import FormDatePicker from "../Form/FormDatePicker";
 import { useState } from "react";
-import ErrorMessage from "../Error/ErrorMessage";
 import {
   containsNumber,
   hasEmailValidFormat,
-  hasObjectEmptyValues,
   hasUpperCase,
   isValidLength,
 } from "../../Utils/utils";
 import FormContainer from "../Containers/FormContainer";
+import axios from "axios";
 
 const ErrorMessages = {
   EMPTY_FIELDS: "Visi laukai yra privalomi!",
@@ -30,10 +29,13 @@ const ErrorMessages = {
   UNEXPECTED_ERROR: "Įvyko netikėta klaida, bandykite vėliau",
 };
 
+const SUCCESS_MESSAGE = "Registracija patvirtinta";
+
 const Registration: React.FC = () => {
-  const theme = createTheme();
   const [birthDate, setBirthDate] = useState<Date | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isRegistrationSuccessful, setIsRegistrationSuccessful] =
+    useState(false);
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -106,6 +108,7 @@ const Registration: React.FC = () => {
           label="Gimimo data"
           value={birthDate}
           onChange={(newDate) => setBirthDate(newDate)}
+          required={true}
         />
         <TextField
           margin="normal"
@@ -126,7 +129,10 @@ const Registration: React.FC = () => {
           id="passwordRepeat"
         />
 
-        {errorMessage && <ErrorMessage message={errorMessage} />}
+        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+        {isRegistrationSuccessful && (
+          <Alert severity="success">{SUCCESS_MESSAGE}</Alert>
+        )}
         <Button
           type="submit"
           fullWidth

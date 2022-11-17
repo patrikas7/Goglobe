@@ -6,12 +6,14 @@ interface DatePickerProps {
   label: string;
   value: Date | null;
   onChange(newDate: any): void;
+  required?: boolean;
 }
 
 const FormDatePicker: React.FC<DatePickerProps> = ({
   label,
   value,
   onChange,
+  required,
 }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -25,9 +27,9 @@ const FormDatePicker: React.FC<DatePickerProps> = ({
             {...params}
             fullWidth
             margin="normal"
-            required
-            name="birthDate"
-            id="birthDate"
+            required={required}
+            name={label}
+            id={label}
           />
         )}
       />
