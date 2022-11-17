@@ -6,10 +6,10 @@ export const dummHeroPost = {
 };
 
 export const dummyOffer = {
-  title: "Featured post",
-  date: "Nov 12",
-  description:
-    "This is a wider card with supporting text below as a natural lead-in to additional content.",
-  image: "https://source.unsplash.com/random",
+  title: "Barselona",
+  date: "Gruodžio 12 - Gruodžio 21",
+  description: "Poiilsinė kelionė ir apsistojimas 4 žvaigždučių viešbutyje",
+  image:
+    "https://media.cntraveler.com/photos/5a985924d41cc84048ce6db0/master/w_4348,h_3261,c_limit/Catedral-de-Barcelona-GettyImages-511874340.jpg",
   imageLabel: "Image Text",
 };

@@ -26,7 +26,7 @@ const TravelOffers: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <main>
           <HeroPost
             image={dummHeroPost.image}

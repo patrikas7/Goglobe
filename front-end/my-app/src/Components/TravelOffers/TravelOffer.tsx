@@ -37,7 +37,7 @@ const TravelOffer: React.FC<TravelOfferProps> = ({
               {description}
             </Typography>
             <Typography variant="subtitle1" color="primary">
-              Continue reading...
+              Daugiau
             </Typography>
           </CardContent>
           <CardMedia
