@@ -13,6 +13,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import api from "../Api/api";
 import FormContainer from "../Containers/FormContainer";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import axios from "axios";
 
 const ErrorMessages = {
   EMPTY_FIELDS: "Visi laukai yra privalomi!",
@@ -36,8 +37,16 @@ const Login: React.FC = () => {
 
     try {
       const { data } = await api.post("/login", loginData);
-    } catch (error) {
-      setErrorMessage(ErrorMessages.UNEXPECTED_ERROR);
+      sessionStorage.setItem("token", data.accessToken);
+      sessionStorage.setItem("user", "client");
+      sessionStorage.setItem("name", data.name);
+      window.location.href = "/";
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        error?.response?.status === 400
+          ? setErrorMessage(ErrorMessages.WRONG_LOGIN)
+          : setErrorMessage(ErrorMessages.UNEXPECTED_ERROR);
+      }
     }
 
     setIsLoading(false);

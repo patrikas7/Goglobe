@@ -19,12 +19,13 @@ import {
 } from "../../Utils/utils";
 import FormContainer from "../Containers/FormContainer";
 import axios from "axios";
+import api from "../Api/api";
 
 const ErrorMessages = {
   EMPTY_FIELDS: "Visi laukai yra privalomi!",
   MISSMATCHING_PASSWORDS: "Slaptažodžiai turi sutapti",
   INCORRECT_PASSWORD_FORMAT:
-    "Slaptažodį turi sudaryt bent 8 simboliai, įskaitant skaitmenį ir didžiąją raidę",
+    "Slaptažodį turi sudaryt bent 8 simboliai, įskaitant skaitmenį, didžiąją raidę ir simbolį",
   INCORRECT_EMAIL_FORMAT: "Netinkamas El. Paštas",
   UNEXPECTED_ERROR: "Įvyko netikėta klaida, bandykite vėliau",
 };
@@ -40,14 +41,14 @@ const Registration: React.FC = () => {
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage("");
-    const data = new FormData(e.currentTarget);
+    const formData = new FormData(e.currentTarget);
     const registrationData = {
-      name: data.get("name"),
-      surname: data.get("surname"),
-      email: data.get("email"),
-      birthDate: data.get("birthDate"),
-      password: data.get("password"),
-      passwordRepeat: data.get("passwordRepeat"),
+      name: formData.get("name"),
+      surname: formData.get("surname"),
+      email: formData.get("email"),
+      birthDate: birthDate,
+      password: formData.get("password"),
+      passwordRepeat: formData.get("passwordRepeat"),
     };
 
     if (!hasEmailValidFormat(registrationData.email)) {
@@ -67,6 +68,13 @@ const Registration: React.FC = () => {
     if (registrationData.password !== registrationData.passwordRepeat) {
       setErrorMessage(ErrorMessages.MISSMATCHING_PASSWORDS);
       return;
+    }
+
+    try {
+      await api.post("/user/register", registrationData);
+      setIsRegistrationSuccessful(true);
+    } catch (error: any) {
+      setErrorMessage(ErrorMessages.UNEXPECTED_ERROR);
     }
   };
 

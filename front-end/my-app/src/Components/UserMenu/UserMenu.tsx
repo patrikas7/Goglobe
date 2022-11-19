@@ -1,8 +1,12 @@
-import { Button, Menu, MenuItem } from "@mui/material";
+import { Button, Menu, MenuItem, PropTypes } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import { useState } from "react";
 
-const UserMenu: React.FC = () => {
+interface UserMenuProps {
+  name: string;
+}
+
+const UserMenu: React.FC<UserMenuProps> = ({ name }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -21,6 +25,7 @@ const UserMenu: React.FC = () => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
+        {name}
         <PersonIcon />
       </Button>
       <Menu

@@ -3,6 +3,8 @@ import SearchBar from "../SearchBar/SearchBar";
 import UserMenu from "../UserMenu/UserMenu";
 
 const Header: React.FC = () => {
+  const name = sessionStorage.getItem("name");
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="inherit">
@@ -14,13 +16,18 @@ const Header: React.FC = () => {
           <Button color="inherit" href="/agencies">
             Agentūros
           </Button>
-          <Button color="inherit" href="/login">
-            Prisijungti
-          </Button>
-          <Button color="inherit" href="/register">
-            Registruotis
-          </Button>
-          {/* <UserMenu /> */}
+          {name ? (
+            <UserMenu name={name} />
+          ) : (
+            <>
+              <Button color="inherit" href="/login">
+                Prisijungti
+              </Button>
+              <Button color="inherit" href="/register">
+                Registruotis
+              </Button>
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
