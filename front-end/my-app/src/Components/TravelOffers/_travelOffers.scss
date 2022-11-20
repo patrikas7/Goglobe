@@ -1,0 +1,13 @@
+.travel-offer-details {
+  display: flex;
+}
+
+.travel-offer-people-count {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+
+  & > svg {
+    margin-left: 5px;
+  }
+}
