@@ -6,6 +6,7 @@ namespace goglobe_API.Data
 {
     public class DatabaseContext: IdentityDbContext<User>
     {
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
         public DbSet<Administrator> Administrators { get; set; }
         public DbSet<Agency> Agencies { get; set; }
         public DbSet<Booking> Bookings { get; set; }
@@ -22,9 +23,5 @@ namespace goglobe_API.Data
         public DbSet<TravelPhoto> TravelPhotos { get; set; }
         public DbSet<TravelProperty> TravelProperties { get; set; }
         public DbSet<User> Users { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=goglobeLive");
-        }
     }
 }

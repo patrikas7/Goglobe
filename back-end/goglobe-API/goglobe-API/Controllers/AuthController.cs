@@ -89,7 +89,7 @@ namespace goglobe_API.Controllers
 
             var accessToken = await _tokenManager.CreateAccessTokenAsync(user);
 
-            return Ok(new SuccessfullLoginDTO(accessToken));
+            return Ok(new SuccessfullLoginDTO(accessToken, user.Name));
         }
     }
 }

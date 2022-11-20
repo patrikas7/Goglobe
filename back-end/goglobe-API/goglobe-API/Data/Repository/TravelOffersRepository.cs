@@ -38,16 +38,21 @@ namespace goglobe_API.Data.Repository
 
         public async Task<IEnumerable<TravelOffer>> GetAll()
         {
-            return await _databaseContext.TravelOffers.ToListAsync();
+            return await _databaseContext.TravelOffers.Include(x => x.City).ToListAsync();
         }
 
-        public async Task<IEnumerable<TravelOffer>> GetByDate(DateTime departureDate, DateTime returnDate)
+        public async Task<IEnumerable<TravelOffer>> Filter(DateTime departureDate, DateTime returnDate,
+                                                            int? minPrice, int? maxPrice, string destination)
         {
             return await _databaseContext.TravelOffers
+                                         .Include(obj => obj.City)
                                          .Where(obj => obj.DepartureDate >= departureDate
                                                 && obj.DepartureDate < returnDate
                                                 && obj.ReturnDate > departureDate 
-                                                && obj.ReturnDate <= returnDate)
+                                                && obj.ReturnDate <= returnDate
+                                                && obj.Price >= minPrice
+                                                && obj.Price <= maxPrice
+                                                && destination != null ? obj.City.Name == destination : true)
                                          .ToListAsync();
         }
 

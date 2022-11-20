@@ -45,9 +45,13 @@ namespace goglobe_API.Controllers
         }
 
         [HttpGet("filter")]
-        public async Task<IEnumerable<TravelOfferDTO>> GetByDates([FromQuery] DateTime dateFrom, [FromQuery] DateTime dateTo)
+        public async Task<IEnumerable<TravelOfferDTO>> Filter([FromQuery] string? destination = null, [FromQuery] DateTime? dateFrom = null, [FromQuery] DateTime? dateTo = null,
+                                                                    [FromQuery] int? minPrice = 0, [FromQuery] int? maxPrice = Int32.MaxValue)
         {
-            return (await _travelOfferRepository.GetByDate(dateFrom, dateTo))
+            var departureDate = dateFrom ?? DateTime.MinValue;
+            var returnDate = dateTo ?? DateTime.MaxValue;
+
+            return (await _travelOfferRepository.Filter(departureDate, returnDate, minPrice, maxPrice, destination))
                 .Select(obj => _mapper.Map<TravelOfferDTO>(obj));
         }
 

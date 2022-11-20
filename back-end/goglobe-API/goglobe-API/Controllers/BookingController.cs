@@ -69,6 +69,10 @@ namespace goglobe_API.Controllers
         public async Task<ActionResult<BookingDTO>> Post(CreateBookingDTO createBookingDTO)
         {
             var booking = _mapper.Map<Booking>(createBookingDTO);
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, booking, PolicyNames.SameUser);
+            if (!authorizationResult.Succeeded)
+                return NotFound();
+
             bool isBookingReference = true;
 
             while(isBookingReference)

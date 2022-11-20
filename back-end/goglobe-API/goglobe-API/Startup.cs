@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -50,10 +51,14 @@ namespace goglobe_API
                 options.AddPolicy(PolicyNames.SameUser, policy => policy.Requirements.Add(new SameUserRequirement()));
             });
 
+            services.AddCors(c => c.AddPolicy("CorsPolicy", builder => builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
             services.AddSingleton<IAuthorizationHandler, UserAuthorizationHandler>();
-            services.AddDbContext<DatabaseContext>();
+            services.AddDbContext<DatabaseContext>(o =>
+                o.UseSqlServer(_configuration.GetConnectionString("DB_CONNECTION")));
             services.AddAutoMapper(typeof(Startup));
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddTransient<IAgencyRepository, AgenciesRepository>();
             services.AddTransient<ITravelOfferRepository, TravelOffersRepository>();
             services.AddTransient<IBookingRepository, BookingsRepository>();
@@ -70,6 +75,7 @@ namespace goglobe_API
             }
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
    
@@ -77,6 +83,7 @@ namespace goglobe_API
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }
