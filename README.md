@@ -49,7 +49,7 @@ The system has three different roles for users: guest user registered user and s
 
 ## API specification
 
-**GET /travelOffers
+**GET /travelOffers**
 
 - Request URL: https://goglobeapi.azurewebsites.net/api/travelOffers
 - Response codes: 200, 400
@@ -73,7 +73,7 @@ The system has three different roles for users: guest user registered user and s
     }
  ]
  
- **GET /travelOffers/:id
+ **GET /travelOffers/:id**
 - Request URL exmaple: https://goglobeapi.azurewebsites.net/api/travelOffers/1
 - Response codes: 200, 400, 404
 - Required headers: none
@@ -94,7 +94,7 @@ The system has three different roles for users: guest user registered user and s
         "travelProperties": []
     }
     
-**POST /travelOffers
+**POST /travelOffers**
 - Request URL: https://goglobeapi.azurewebsites.net/api/travelOffers
 - Response codes: 201, 400, 401
 - Required headers: authorization
@@ -111,7 +111,7 @@ The system has three different roles for users: guest user registered user and s
     "description": "",
 }
 
-**PUT /travelOffers/:id
+**PUT /travelOffers/:id**
 - Request URL exmaple: https://goglobeapi.azurewebsites.net/api/travelOffers/1
 - Response codes: 200, 400, 401, 404
 - Required headers: authorization
@@ -128,12 +128,12 @@ The system has three different roles for users: guest user registered user and s
     "description": "",
 }
 
-**DELETE /travelOffers/:id
+**DELETE /travelOffers/:id**
 - Request URL exmaple: https://goglobeapi.azurewebsites.net/api/travelOffers/1
 - Response codes: 200, 400, 401, 404
 - Required headers: authorization
 
-**GET /bookigns
+**GET /bookigns**
 - Request URL: https://goglobeapi.azurewebsites.net/api/bookings
 - Response codes: 200, 400, 401
 - Required headers: authorization
@@ -150,7 +150,7 @@ The system has three different roles for users: guest user registered user and s
     },       
 ]
 
-**GET /bookings/:id
+**GET /bookings/:id**
 - Request URL exmaple: https://goglobeapi.azurewebsites.net/api/bookings/1
 - Response codes: 200, 400, 401
 - Required headers: authorization
@@ -165,7 +165,7 @@ The system has three different roles for users: guest user registered user and s
         "clientId": "69a338fa-45d2-44a4-a2cd-543232dee02a"
 },       
 
-**POST /bookings
+**POST /bookings**
 - Request URL: https://goglobeapi.azurewebsites.net/api/bookings
 - Response codes: 201, 400, 401
 - Required headers: authorization
@@ -175,7 +175,7 @@ The system has three different roles for users: guest user registered user and s
           "ClientId": 1,
 }
 
-**PUT /bookings
+**PUT /bookings**
 - Request URL: https://goglobeapi.azurewebsites.net/api/bookings/:id
 - Response codes: 200, 400, 401, 404
 - Required headers: authorization
@@ -185,7 +185,7 @@ The system has three different roles for users: guest user registered user and s
           "ClientId": 1,
 }
 
-**DELETE /bookings
+**DELETE /bookings**
 - Request URL: https://goglobeapi.azurewebsites.net/api/bookings/:id
 - Response codes: 200, 400, 401, 404
 - Required headers: authorization
